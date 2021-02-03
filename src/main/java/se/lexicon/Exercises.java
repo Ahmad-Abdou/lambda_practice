@@ -54,8 +54,9 @@ public class Exercises {
      */
     public static void exercise4(String message){
         System.out.println(message);
-        //Write your code here
-
+        Predicate<Person>  personPredicate = person -> person.getId()== 123;
+        Person personWithFindOne = storage.findOne(personPredicate);
+        System.out.println(personWithFindOne);
         System.out.println("----------------------");
 
     }
