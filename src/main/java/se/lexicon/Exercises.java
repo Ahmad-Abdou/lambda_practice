@@ -5,8 +5,6 @@ import se.lexicon.model.Gender;
 import se.lexicon.model.Person;
 
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
-import java.time.chrono.Chronology;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -19,9 +17,9 @@ public class Exercises {
     */
     public static void exercise1(String message){
         System.out.println(message);
-        Predicate<Person> firstNameCondition = person -> person.getFirstName().equalsIgnoreCase("Erik");
-        List<Person> personWithErikName = storage.findMany(firstNameCondition);
-        personWithErikName.forEach(person -> System.out.println(person));
+        Predicate<Person> personPredicate = person -> person.getFirstName().equalsIgnoreCase("Erik");
+        List<Person>personList = storage.findMany(personPredicate);
+        personList.forEach(System.out::println);
 
         System.out.println("----------------------");
     }
@@ -31,9 +29,11 @@ public class Exercises {
      */
     public static void exercise2(String message){
         System.out.println(message);
-       Predicate<Person> allFemales = person -> person.getGender().equals(Gender.FEMALE);
-       List<Person> females = storage.findMany(allFemales);
-       females.forEach(person -> System.out.println(person));
+        Predicate<Person>personPredicate = person -> person.getGender().equals(Gender.FEMALE);
+        List<Person>personList = storage.findMany(personPredicate);
+        personList.forEach(System.out::println);
+
+
         System.out.println("----------------------");
     }
 
@@ -42,10 +42,12 @@ public class Exercises {
      */
     public static void exercise3(String message){
         System.out.println(message);
+
         LocalDate ld = LocalDate.of(2000,01,01);
-        Predicate<Person> personsBday = person -> person.getBirthDate().isAfter(ld) ;
-        List<Person>  whoBornAfter = storage.findMany(personsBday);
+        Predicate<Person> personPredicate = person -> person.getBirthDate().isAfter(ld);
+        List<Person>  whoBornAfter = storage.findMany(personPredicate);
         whoBornAfter.forEach(person -> System.out.println(person));
+
         System.out.println("----------------------");
     }
 
@@ -67,7 +69,14 @@ public class Exercises {
      */
     public static void exercise5(String message){
         System.out.println(message);
-        //Write your code here
+        Predicate<Person> personPredicate = person -> person.getId() == 456;
+
+        List<String> personStringFunction = storage.findManyAndMapEachToString(personPredicate,(person) ->
+                             person.getFirstName()
+                        +" "+person.getLastName()
+                        +" "+person.getBirthDate());
+        System.out.println(personStringFunction);
+
 
         System.out.println("----------------------");
     }
@@ -77,8 +86,13 @@ public class Exercises {
      */
     public static void exercise6(String message){
         System.out.println(message);
-        //Write your code here
+       Predicate<Person>personPredicate = person -> person.getFirstName().toUpperCase().startsWith("E");
+       List<String>personList = storage.findManyAndMapEachToString(personPredicate,person ->
+                   person.getFirstName()+
+               " "+person.getLastName()+
+               " "+person.getBirthDate()+"\n");
 
+        System.out.println(personList);
         System.out.println("----------------------");
     }
 
@@ -87,8 +101,10 @@ public class Exercises {
             “Olle Svensson 9 years”. Use findManyAndMapEachToString() method.
      */
     public static void exercise7(String message){
-        System.out.println(message);
-        //Write your code here
+//        System.out.println(message);
+//        Function<Person,String> mapper = person ->
+//                person.getFirstName() + " " +
+//                        person.getLastName() + " "
 
         System.out.println("----------------------");
     }
@@ -98,7 +114,7 @@ public class Exercises {
      */
     public static void exercise8(String message){
         System.out.println(message);
-        //Write your code here
+
 
         System.out.println("----------------------");
     }
@@ -118,7 +134,7 @@ public class Exercises {
      */
     public static void exercise10(String message){
         System.out.println(message);
-        //Write your code here
+        Predicate<Person> personFirstName = person -> new StringBuilder(person.getFirstName()).reverse().toString().equalsIgnoreCase(person.getFirstName());
 
         System.out.println("----------------------");
     }
